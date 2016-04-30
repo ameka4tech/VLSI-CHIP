@@ -1,0 +1,58 @@
+Mapper Code 
+""" 
+************************************************************************************* ** 
+ 
+               MAPPER PROGRAM FOR FINDING NUMBER OF ARTIFICIAL SURFACES                       Name: Ameya Kathapurkar (mug739) 
+ 
+************************************************************************************* ** 
+""" 
+#!/usr/bin/python  #Python Environment import sys 
+# input comes from STDIN (standard input) 
+for line in sys.stdin: 
+    # remove leading and trailing whitespace 
+    line = line.strip() 
+    # split the line into words     unpacked = line.split(",")     # increase counters 
+    stadium, capacity, expanded, location, surface, turf, team, opened, weather, roof, elevation = line.split(",")     opt = [turf, "1"]     print ("\t".join(opt)) 
+ 
+ 
+ 
+#************************Program Ends*************************************** 
+ 
+REDUCER CODE 
+""" 
+************************************************************************************* ** 
+                      REDUCER PROGRAM TO CALCULATE NUMBER OF ARTIFICIAL SURFACES 
+                                    Name:Ameya Kathapurkar(mug739) 
+************************************************************************************* ** 
+""" 
+ 
+""" 
+Command For Execution 
+ 
+-sh-4.2$ hadoop jar /usr/hdp/current/hadoop-mapreduce-client/hadoop-streaming-2.7.1.2.3.2.02950.jar -file /home/mug739/mapper.py -mapper /home/mug739/mapper.py -file 
+/home/mug739/reducer.py -reducer /home/mug739/reducer.py -input /taxi/unixstadiums.csv -output /taxi/cloudprojout 
+ 
+""" 
+#!/usr/bin/env python        #Python Environment 
+ 
+import sys 
+ 
+finalturf = None countturf = 0 
+ 
+# input comes from STDIN 
+for line in sys.stdin: 
+ 
+    # remove leading and trailing whitespace 
+    line = line.strip() 
+ 
+    # parse the input we got from mapper.py 
+    turf, count = line.split("\t") 
+    # convert count (currently a string) to int     count = int(count) 
+    # Hadoop Sorting Mapped Output and Writting to STDOUT 
+    if not finalturf:         finalturf = turf     if turf == finalturf:         countturf += count 
+    else: 
+        opt = [finalturf, countturf] 
+        print ("\n***********The Number of Natural Surfaces found and denoted as FALSE****************") 
+        print("------->".join(str(x) for x in opt))         finalturf = turf         countturf = 1 #Printing Outputs 
+print ("\n***************The Number of Artificial Surfaces found and denoted as TRUE******************") 
+print("------->".join(str(x) for x in [finalturf,countturf])) print("\n----------------------ThankYou--------------------------") 
